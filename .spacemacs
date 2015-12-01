@@ -32,7 +32,7 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; spell-checking
+     spell-checking
      ;; syntax-checking
      ;; version-control
      )
@@ -40,7 +40,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(paredit inf-clojure julia-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -198,6 +198,12 @@ user code."
   "Configuration function for user code.
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+  (global-set-key [f7] 'paredit-mode)
+  (defun xlispstat ()
+    (interactive)
+    (inferior-lisp "xlispstat"))
+  (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
+  (setq inf-clojure-buffer "*inferior-lisp*")
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
