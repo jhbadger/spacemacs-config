@@ -199,6 +199,7 @@ user code."
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   (ido-mode -1)
+  (helm-mode -1)
   (global-set-key [f7] 'paredit-mode)
   (defun xlispstat ()
     (interactive)
