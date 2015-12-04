@@ -40,7 +40,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(paredit inf-clojure julia-mode)
+   dotspacemacs-additional-packages '(paredit inf-clojure julia-mode dash-at-point)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -201,6 +201,8 @@ layers configuration. You are free to put any user code."
   (ido-mode -1)
   (helm-mode -1)
   (global-set-key [f7] 'paredit-mode)
+  (global-set-key "\C-cd" 'dash-at-point)
+  (global-set-key "\C-ce" 'dash-at-point-with-docset)
   (defun xlispstat ()
     (interactive)
     (inferior-lisp "xlispstat"))
