@@ -27,8 +27,8 @@ values."
      ;; better-defaults
      emacs-lisp
      ;; git
-     ;; markdown
-     ;; org
+     markdown
+     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -40,7 +40,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(paredit inf-clojure julia-mode dash-at-point)
+   dotspacemacs-additional-packages '(paredit inf-clojure julia-mode dash-at-point ess slime)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -208,15 +208,51 @@ layers configuration. You are free to put any user code."
   (defun xlispstat ()
     (interactive)
     (inferior-lisp "xlispstat"))
-  (defun picolisp ()
-    (interactive)
-    (inferior-lisp "pil +"))
   (defun planck ()
     (interactive)
     (inf-clojure "planck"))
   (setq calendar-latitude 39.0836)
   (setq calendar-longitude -77.1483)
   (setq calendar-location-name "Rockville, MD")
+  ;; In order to get the picolisp-mode working correctly you have to
+  ;; add the following expressions to your .emacs and adapt them 
+  ;; according to your set-up: 
+
+  (add-to-list 'load-path "~/lib/picoLisp/lib/el")
+  (load "tsm.el") ;; Picolisp TransientSymbolsMarkup (*Tsm)
+  (autoload 'run-picolisp "inferior-picolisp")
+  (autoload 'picolisp-mode "picolisp" "Major mode for editing
+ Picolisp." t)
+  ;; pil is more modern than plmod
+  (setq picolisp-program-name "~/lib/picoLisp/pil") 
+
+  ;; If you have also SLIME installed, it will suck all possible lisp
+  ;; extensions up (greedy bastard). 
+  ;; So in order to get the correct file-association for picolisp 
+  ;; files you'll have to also add this:
+
+  (add-to-list 'auto-mode-alist '("\\.l$" . picolisp-mode))
+
+  ;; If you want, you can add a few hooks for convenience:
+
+  (add-hook 'picolisp-mode-hook
+   (lambda ()
+      (paredit-mode +1) ;; Loads paredit mode automatically
+      (tsm-mode) ;; Enables TSM
+      (define-key picolisp-mode-map (kbd "RET") 'newline-and-indent)
+      (define-key picolisp-mode-map (kbd "C-h") 'paredit-backward-delete) ) )
+  ;; active Babel languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (julia .t)
+     (ruby . t)
+     (python . t)
+     (clojure . t)
+     (lisp . t)
+     (picolisp . t)
+     ))
+  (setq org-confirm-babel-evaluate nil) 
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
